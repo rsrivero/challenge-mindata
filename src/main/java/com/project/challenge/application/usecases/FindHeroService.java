@@ -6,6 +6,9 @@ import com.project.challenge.application.exceptions.HeroNotFound;
 import com.project.challenge.application.mapper.HeroMapper;
 import com.project.challenge.domain.entity.Hero;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -20,6 +23,11 @@ public class FindHeroService {
     public HeroDTO findHero(Integer id) throws HeroNotFound {
         Hero hero = heroQueryService.findHero(id).orElseThrow(HeroNotFound::new);
         return heroMapper.toDTO(hero);
+    }
+
+    public Page<HeroDTO> findAll(Pageable pageable, Specification<Hero> where) {
+        Page<Hero> heroes = heroQueryService.findAllPaged(pageable, where);
+        return  heroes.map(heroMapper::toDTO);
     }
 
 }

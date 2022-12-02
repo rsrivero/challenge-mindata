@@ -131,5 +131,25 @@ public class HeroCrudControllerTest {
                 .andExpect(jsonPath("$.power", equalTo(hero.getPower())));
     }
 
+    @Test
+    public void test_Index_Should_FindAll_When_HeroesFounds() throws Exception {
+        var firstHero = heroFactory.create();
+        var secondHero = heroFactory.create();
+
+        this.mockMvc.perform(
+                        get(heroPath)
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .accept(MediaType.APPLICATION_JSON))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.content.[0].id", notNullValue()))
+                .andExpect(jsonPath("$.content.[0].name", notNullValue()))
+                .andExpect(jsonPath("$.content.[0].power", notNullValue()))
+                .andExpect(jsonPath("$.content.[1].id", notNullValue()))
+                .andExpect(jsonPath("$.content.[1].name", notNullValue()))
+                .andExpect(jsonPath("$.content.[1].power", notNullValue()));
+
+    }
+
 
 }

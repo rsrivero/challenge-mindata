@@ -7,9 +7,14 @@ import com.project.challenge.application.usecases.DeleteHeroService;
 import com.project.challenge.application.usecases.FindHeroService;
 import com.project.challenge.application.usecases.SaveHeroService;
 import com.project.challenge.application.usecases.UpdateHeroService;
+import com.project.challenge.domain.entity.Hero;
 import com.project.challenge.infrastructure.rest.request.HeroDTORequest;
 import com.project.challenge.infrastructure.rest.response.HeroDTOResponse;
+import com.sipios.springsearch.anotation.SearchSpec;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -60,6 +65,14 @@ public class HeroController {
         HeroDTO hero = heroUpdaterService.update(id, req);
 
         return heroMapper.toResponse(hero);
+    }
+
+    @GetMapping()
+    public Page<HeroDTOResponse> index(Pageable pageable, @SearchSpec Specification<Hero> specs) throws HeroNotFound {
+
+        Page<HeroDTO> heroes = heroFinderService.findAll(pageable, Specification.where(specs));
+
+        return heroes.map(heroMapper::toResponse);
     }
 
 }
