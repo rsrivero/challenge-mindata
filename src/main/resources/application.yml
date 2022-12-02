@@ -1,0 +1,12 @@
+spring:
+  liquibase:
+    change-log: classpath:liquibase/liquibase-changelog.yml
+    enabled: true
+
+logging:
+  level:
+    com:
+      project:
+        challenge: INFO
+    org:
+      springframework: INFO

@@ -1,0 +1,11 @@
+databaseChangeLog:
+  - changeSet:
+      id: init
+      author: rodrigo.seas.rivero
+      changes:
+        - sql:
+            sql: CREATE TABLE hero (  id INT AUTO_INCREMENT PRIMARY KEY,  name VARCHAR(150) NOT NULL,  power VARCHAR(150) NOT NULL );
+        - sql:
+            sql: insert into hero(name, power) values ('Hulk','fuerza');
+        - sql:
+            sql: insert into hero(name, power) values ('Thor','Dios del trueno');
