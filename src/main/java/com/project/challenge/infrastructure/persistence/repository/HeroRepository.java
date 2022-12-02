@@ -17,4 +17,7 @@ public interface HeroRepository extends JpaRepository<Hero, Integer>,
     default Optional<Hero> findHero(Integer id) {
         return this.findById(id);
     }
+    default void delete(Integer id) {
+        this.deleteById(id);
+    }
 }

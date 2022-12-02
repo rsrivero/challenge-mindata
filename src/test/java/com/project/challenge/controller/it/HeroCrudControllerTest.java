@@ -94,5 +94,21 @@ public class HeroCrudControllerTest {
                 .andExpect(status().isNotFound());
     }
 
+    @Test
+    public void test_Delete_Should_Delete_When_HeroIdFound() throws Exception {
+        var hero = heroFactory.create();
+
+        var heroFindId = heroPath.concat("/")
+                .concat(String.valueOf(hero.getId()));
+
+        this.mockMvc.perform(
+                        delete(heroFindId)
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .accept(MediaType.APPLICATION_JSON))
+                .andDo(print())
+                .andExpect(status().isNoContent());
+    }
+
+
 
 }

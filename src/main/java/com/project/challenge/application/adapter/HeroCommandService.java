@@ -7,4 +7,5 @@ public interface HeroCommandService {
 
     Hero save(Hero hero);
 
+    void delete(Integer id);
 }
