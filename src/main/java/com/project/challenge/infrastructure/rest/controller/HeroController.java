@@ -6,6 +6,7 @@ import com.project.challenge.application.mapper.HeroMapper;
 import com.project.challenge.application.usecases.DeleteHeroService;
 import com.project.challenge.application.usecases.FindHeroService;
 import com.project.challenge.application.usecases.SaveHeroService;
+import com.project.challenge.application.usecases.UpdateHeroService;
 import com.project.challenge.infrastructure.rest.request.HeroDTORequest;
 import com.project.challenge.infrastructure.rest.response.HeroDTOResponse;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +22,8 @@ public class HeroController {
     @Autowired
     private SaveHeroService saveHeroService;
 
+    @Autowired
+    private UpdateHeroService heroUpdaterService;
 
     @Autowired
     private FindHeroService heroFinderService;
@@ -49,6 +52,14 @@ public class HeroController {
 
         heroEliminatorService.delete(id);
 
+    }
+
+    @PutMapping(value = "/{id}",consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
+    public HeroDTOResponse update(@RequestBody HeroDTORequest req, @PathVariable Integer id) throws HeroNotFound {
+
+        HeroDTO hero = heroUpdaterService.update(id, req);
+
+        return heroMapper.toResponse(hero);
     }
 
 }

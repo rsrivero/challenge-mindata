@@ -1,6 +1,7 @@
 package com.project.challenge.controller.it;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.github.javafaker.Faker;
 import com.project.challenge.service.HeroFactory;
 import com.project.challenge.service.HeroeRequestBuilder;
 import org.junit.jupiter.api.BeforeAll;
@@ -109,6 +110,26 @@ public class HeroCrudControllerTest {
                 .andExpect(status().isNoContent());
     }
 
+    @Test
+    public void test_update_Should_update_When_HeroIdFound() throws Exception {
+        var hero = heroFactory.create();
+
+        var heroFindId = heroPath.concat("/")
+                .concat(String.valueOf(hero.getId()));
+
+        hero.setName(new Faker().superhero().name());
+
+        this.mockMvc.perform(
+                        put(heroFindId)
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .accept(MediaType.APPLICATION_JSON)
+                                .content(objectMapper.writeValueAsString(hero)))
+                .andDo(print())
+                .andExpect( status().isOk())
+                .andExpect(jsonPath("$.id", notNullValue()))
+                .andExpect(jsonPath("$.name", equalTo(hero.getName())))
+                .andExpect(jsonPath("$.power", equalTo(hero.getPower())));
+    }
 
 
 }

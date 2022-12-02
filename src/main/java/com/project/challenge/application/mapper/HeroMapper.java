@@ -5,6 +5,7 @@ import com.project.challenge.domain.entity.Hero;
 import com.project.challenge.infrastructure.rest.request.HeroDTORequest;
 import com.project.challenge.infrastructure.rest.response.HeroDTOResponse;
 import org.mapstruct.Mapper;
+import org.mapstruct.MappingTarget;
 
 @Mapper(componentModel = "spring")
 public interface HeroMapper {
@@ -14,4 +15,7 @@ public interface HeroMapper {
     HeroDTO toDTO(Hero hero);
 
     HeroDTOResponse toResponse(HeroDTO hero);
+
+    Hero updateEntity(@MappingTarget Hero hero, HeroDTORequest updateHero);
+
 }
