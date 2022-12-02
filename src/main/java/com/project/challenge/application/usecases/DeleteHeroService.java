@@ -18,6 +18,14 @@ public class DeleteHeroService {
     @Autowired
     private HeroQueryService heroQueryService;
 
+    /**
+     * Eliminate a superhero given his ID
+     * Throw an exception if the superhero is not found
+     *
+     * @param id
+     * @return void
+     * @throws com.project.challenge.application.exceptions.HeroNotFound
+     */
     @CacheEvict(value = "heroes", key = "#id")
     @Transactional(propagation = Propagation.REQUIRED)
     public void delete(Integer id) throws HeroNotFound {
