@@ -1,6 +1,7 @@
 package com.project.challenge.controller.it;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.project.challenge.service.HeroFactory;
 import com.project.challenge.service.HeroeRequestBuilder;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -29,6 +30,9 @@ public class HeroCrudControllerTest {
 
     @Autowired
     private WebApplicationContext context;
+
+    @Autowired
+    private HeroFactory heroFactory;
 
     private MockMvc mockMvc;
 
@@ -59,5 +63,36 @@ public class HeroCrudControllerTest {
                 .andExpect(jsonPath("$.power", equalTo(req.getPower())));
 
     }
+
+    @Test
+    public void test_Find_Should_FindHero_When_HeroIdFound() throws Exception {
+        var hero = heroFactory.create();
+        var heroFindId = heroPath.concat("/").concat(String.valueOf(hero.getId()));
+
+        this.mockMvc.perform(
+                        get(heroFindId)
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .accept(MediaType.APPLICATION_JSON))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.id", equalTo(hero.getId())))
+                .andExpect(jsonPath("$.name", equalTo(hero.getName())))
+                .andExpect(jsonPath("$.power", equalTo(hero.getPower())));
+
+    }
+
+    @Test
+    public void test_Find_Should_NotFount_When_HeroIdNotFound() throws Exception {
+        var heroFindId = heroPath.concat("/")
+                .concat("498498494");
+
+        this.mockMvc.perform(
+                        get(heroFindId)
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .accept(MediaType.APPLICATION_JSON))
+                .andDo(print())
+                .andExpect(status().isNotFound());
+    }
+
 
 }
