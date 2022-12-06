@@ -15,9 +15,7 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler(HeroNotFound.class)
     protected ResponseEntity<Object> handle(HeroNotFound ex, WebRequest request) {
 
-        String bodyOfResponse = "Hero not found.";
-
-        return handleExceptionInternal(ex, bodyOfResponse,
+        return handleExceptionInternal(ex, ex.getMessage(),
                 new HttpHeaders(), HttpStatus.NOT_FOUND, request);
     }
 }
