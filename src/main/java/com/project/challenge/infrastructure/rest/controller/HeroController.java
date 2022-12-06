@@ -43,14 +43,14 @@ public class HeroController {
     @PostMapping(consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
     @TimerLog
     public HeroDTOResponse create(@RequestBody HeroDTORequest req){
-        HeroDTO hero = saveHeroService.save(req);
+        var hero = saveHeroService.save(req);
         return heroMapper.toResponse(hero);
     }
 
     @GetMapping("/{id}")
     @TimerLog
     public HeroDTOResponse find(@PathVariable Integer id) throws HeroNotFound {
-        HeroDTO hero = heroFinderService.findHero(id);
+        var hero = heroFinderService.findHero(id);
         return heroMapper.toResponse(hero);
     }
 
@@ -58,16 +58,14 @@ public class HeroController {
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
     @TimerLog
     public void delete(@PathVariable Integer id) throws HeroNotFound {
-
         heroEliminatorService.delete(id);
-
     }
 
     @PutMapping(value = "/{id}",consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
     @TimerLog
     public HeroDTOResponse update(@RequestBody HeroDTORequest req, @PathVariable Integer id) throws HeroNotFound {
 
-        HeroDTO hero = heroUpdaterService.update(id, req);
+        var hero = heroUpdaterService.update(id, req);
 
         return heroMapper.toResponse(hero);
     }
@@ -76,7 +74,7 @@ public class HeroController {
     @TimerLog
     public Page<HeroDTOResponse> index(Pageable pageable, @SearchSpec Specification<Hero> specs) throws HeroNotFound {
 
-        Page<HeroDTO> heroes = heroFinderService.findAll(pageable, Specification.where(specs));
+        var heroes = heroFinderService.findAll(pageable, Specification.where(specs));
 
         return heroes.map(heroMapper::toResponse);
     }

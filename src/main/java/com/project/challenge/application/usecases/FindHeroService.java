@@ -32,7 +32,7 @@ public class FindHeroService {
      */
     @Cacheable( value = "heroes")
     public HeroDTO findHero(Integer id) throws HeroNotFound {
-        Hero hero = heroQueryService.findHero(id).orElseThrow(HeroNotFound::new);
+        var hero = heroQueryService.findHero(id).orElseThrow(HeroNotFound::new);
         return heroMapper.toDTO(hero);
     }
 
@@ -44,7 +44,7 @@ public class FindHeroService {
      * @return Page<HeroDTO>
      */
     public Page<HeroDTO> findAll(Pageable pageable, Specification<Hero> where) {
-        Page<Hero> heroes = heroQueryService.findAllPaged(pageable, where);
+        var heroes = heroQueryService.findAllPaged(pageable, where);
         return  heroes.map(heroMapper::toDTO);
     }
 }

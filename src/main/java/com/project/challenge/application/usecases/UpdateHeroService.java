@@ -5,7 +5,6 @@ import com.project.challenge.application.adapter.HeroQueryService;
 import com.project.challenge.application.dto.HeroDTO;
 import com.project.challenge.application.exceptions.HeroNotFound;
 import com.project.challenge.application.mapper.HeroMapper;
-import com.project.challenge.domain.entity.Hero;
 import com.project.challenge.infrastructure.rest.request.HeroDTORequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CachePut;
@@ -38,7 +37,7 @@ public class UpdateHeroService {
     @CachePut(value = "heroes", key = "#id")
     @Transactional(propagation = Propagation.REQUIRED)
     public HeroDTO update(Integer id, HeroDTORequest heroRequest) throws HeroNotFound {
-        Hero hero = heroQueryService.findHero(id).orElseThrow(HeroNotFound::new);
+        var hero = heroQueryService.findHero(id).orElseThrow(HeroNotFound::new);
         var heroUpdated = heroMapper.updateEntity(hero, heroRequest);
         heroUpdated = heroCommandService.update(heroUpdated);
         return heroMapper.toDTO(heroUpdated);

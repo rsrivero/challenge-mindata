@@ -29,6 +29,7 @@ public interface HeroRepository extends JpaRepository<Hero, Integer>,
     default Hero update(Hero hero) {
         return ((CrudRepository<Hero, Integer>) this).save(hero);
     }
+
     default Page<Hero> findAllPaged(Pageable pageable, Specification<Hero> where) {
         return this.findAll(where, pageable);
     }

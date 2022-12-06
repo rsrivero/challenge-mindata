@@ -15,11 +15,11 @@ public class TimedLogAspect {
 
     @Around("@annotation(com.project.challenge.application.annotations.TimerLog)")
     public Object timed(ProceedingJoinPoint joinPoint) throws Throwable {
-        Timer.Context context = timer.time();
-        StringBuilder stringBuilder = new StringBuilder("Processing time: ");
+        var context = timer.time();
+        var stringBuilder = new StringBuilder("Processing time: ");
 
         try{
-            Object result =joinPoint.proceed();
+            var result =joinPoint.proceed();
             stopAndLog(context, stringBuilder);
             return result;
         }catch (Exception error){
